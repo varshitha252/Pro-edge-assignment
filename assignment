@@ -1,0 +1,248 @@
+// Import necessary dependencies
+import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  FlatList,
+  TouchableOpacity,
+  Modal,
+} from 'react-native';
+import Contacts from 'react-native-contacts';
+
+const App = () => {
+  const [contacts, setContacts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedContact, setSelectedContact] = useState(null);
+
+  useEffect(() => {
+    // Load contacts when the component mounts
+    loadContacts();
+  }, []);
+
+  const loadContacts = () => {
+    Contacts.getAll((err, contacts) => {
+      if (err) throw err;
+      setContacts(contacts);
+    });
+  };
+
+Bard
+
+import React, { useState, useEffect } from 'react';
+import Contacts from 'react-native-contacts';
+
+const ContactsApp = () => {
+  const [contacts, setContacts] = useState([]);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    Contacts.getAll().then(contacts => {
+      setContacts(contacts);
+    });
+  }, []);
+
+  const handleSearch = () => {
+    setContacts(contacts.filter(contact => {
+      return contact.name.toLowerCase().includes(search.toLowerCase());
+    }));
+  };
+
+  const handleContactClick = (contact) => {
+    showContactPopup(contact);
+  };
+
+  const showContactPopup = (contact) => {
+    const { name, number } = contact;
+
+    const popup = (
+      <View style={styles.popup}>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.number}>{number}</Text>
+      </View>
+    );
+
+    showModal(popup);
+  };
+
+  return (
+    <View style={styles.container}>
+      <SearchBar
+        value={search}
+        onChangeText={setSearch}
+        onSearch={handleSearch}
+      />
+      <FlatList
+        data={contacts}
+        keyExtractor={contact => contact.id}
+        renderItem={({ item }) => (
+          <Contact
+            name={item.name}
+            number={item.phone}
+            onClick={handleContactClick}
+          />
+        )}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  popup: {
+    width: 300,
+    height: 200,
+    position: 'absolute',
+    top: 100,
+    left: 50,
+    backgroundColor: 'white',
+    borderRadius: 5,
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  number: {
+    fontSize: 16,
+  },
+});
+
+export default ContactsApp;
+
+contetnt
+The README file should explain the components of the code and mention all libraries and plugins used. For example, the following README file could be used for this app:
+
+React Native Contacts App
+This is a simple React Native app that displays the user's contacts. It uses the react-native-contacts library to access the user's contacts.
+
+Components
+The app consists of the following components:
+
+ContactsApp - The main app component.
+SearchBar - A component that allows the user to search for contacts.
+Contact - A component that displays a single contact.
+Libraries and Plugins
+The app uses the following libraries and plugins:
+
+react-native-contacts - A library for accessing the user's contacts.
+react-native-modal - A library for displaying modals.
+Usage
+To use the app, first install the dependencies:
+
+npm install
+
+Code snippet
+
+Then, run the app:
+
+Use code with caution. Learn more
+react-native run-android
+
+react-native run-ios
+
+Code snippet
+
+## License
+
+The app is licensed under the MIT License.
+Use code with caution. Learn more
+The APK can be included on GitHub by running the following command:
+
+Code snippet
+react-native bundle --platform android --dev false --bundleType apk
+Use code with caution. Learn more
+The generated APK will be located in the android/app/build/outputs/apk/ directory.
+
+I hope this helps!
+
+  const handleContactPress = (contact) => {
+    setSelectedContact(contact);
+  };
+
+  const handleModalClose = () => {
+    setSelectedContact(null);
+  };
+
+  const searchContacts = (query) => {
+    setSearchQuery(query);
+  };
+
+  const filteredContacts = contacts.filter((contact) => {
+    const { givenName, familyName, phoneNumbers } = contact;
+    const fullName = `${givenName} ${familyName}`.toLowerCase();
+    return fullName.includes(searchQuery.toLowerCase()) || 
+           phoneNumbers.some((number) => number.number.includes(searchQuery));
+  });
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.contactItem}
+      onPress={() => handleContactPress(item)}
+    >
+      <Text style={styles.contactName}>{item.givenName}</Text>
+      <Text style={styles.contactNumber}>
+        {item.phoneNumbers[0]?.number || 'N/A'}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  return (
+    <View style={styles.container}>
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search contacts"
+        onChangeText={searchContacts}
+      />
+      <FlatList
+        data={filteredContacts}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.recordID}
+      />
+      <Modal visible={selectedContact !== null} animationType="slide">
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalText}>{selectedContact?.givenName}</Text>
+          <Text style={styles.modalText}>
+            {selectedContact?.phoneNumbers[0]?.number || 'N/A'}
+          </Text>
+          <TouchableOpacity
+            style={styles.modalCloseButton}
+            onPress={handleModalClose}
+          >
+            <Text style={styles.modalCloseButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 20,
+  },
+  searchInput: {
+    height: 40,
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  contactItem: {
+    marginBottom: 10,
+  },
+  contactName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  contactNumber: {
+    fontSize: 14,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',   
